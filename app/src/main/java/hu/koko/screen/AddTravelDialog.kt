@@ -2,32 +2,15 @@ package hu.koko.screen
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import hu.koko.model.Travel
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
 import hu.koko.model.User
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -79,48 +62,46 @@ fun AddTravelDialog(
 
     Dialog(onDismissRequest = onCancel) {
         Surface(
-            shape = RoundedCornerShape(16.dp),
-            color = MaterialTheme.colorScheme.background,
+            shape = RoundedCornerShape(24.dp),
+            color = MaterialTheme.colorScheme.surfaceVariant,
+            tonalElevation = 8.dp,
+            shadowElevation = 12.dp,
             modifier = Modifier.padding(16.dp)
         ) {
             Column(modifier = Modifier.padding(24.dp)) {
-                // Title text with modern typography
                 Text(
-                    "Új utazás hozzáadása",
-                    style = MaterialTheme.typography.titleLarge,
+                    text = "Új utazás hozzáadása",
+                    style = MaterialTheme.typography.headlineSmall,
                     color = MaterialTheme.colorScheme.primary
                 )
 
-                Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(16.dp))
 
-                // Origin City TextField with custom shape and padding
                 TextField(
                     value = originCity,
                     onValueChange = { originCity = it },
                     label = { Text("Honnan") },
-                    shape = RoundedCornerShape(12.dp),
+                    shape = RoundedCornerShape(16.dp),
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
                 )
 
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(12.dp))
 
-                // Destination City TextField with custom shape
                 TextField(
                     value = destinationCity,
                     onValueChange = { destinationCity = it },
                     label = { Text("Hova") },
-                    shape = RoundedCornerShape(12.dp),
+                    shape = RoundedCornerShape(16.dp),
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
                 )
 
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(12.dp))
 
-                // Button to select date and time, rounded corners
                 OutlinedButton(
                     onClick = { showDatePicker.value = true },
-                    shape = RoundedCornerShape(12.dp),
+                    shape = RoundedCornerShape(16.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
@@ -129,24 +110,21 @@ fun AddTravelDialog(
                     )
                 }
 
-                Spacer(Modifier.height(16.dp))
+                Spacer(Modifier.height(24.dp))
 
-                // Row to align buttons at the bottom
                 Row(
                     horizontalArrangement = Arrangement.End,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    // Cancel Button with modern design
                     TextButton(
                         onClick = onCancel,
-                        shape = RoundedCornerShape(8.dp)
+                        shape = RoundedCornerShape(12.dp)
                     ) {
                         Text("Mégse")
                     }
 
                     Spacer(modifier = Modifier.width(8.dp))
 
-                    // Add Button with enhanced design
                     Button(
                         onClick = {
                             if (originCity.isNotBlank() && destinationCity.isNotBlank() && selectedDateTime != null) {
@@ -162,8 +140,7 @@ fun AddTravelDialog(
                                 )
                             }
                         },
-                        shape = RoundedCornerShape(8.dp),
-                        modifier = Modifier.padding(start = 8.dp)
+                        shape = RoundedCornerShape(12.dp)
                     ) {
                         Text("Hozzáadás")
                     }
