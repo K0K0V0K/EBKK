@@ -24,19 +24,21 @@ class MessageService : Service() {
 
     override fun onBind(intent: Intent?): IBinder? = null
 
+    @SuppressLint("ForegroundServiceType")
     override fun onCreate() {
         super.onCreate()
         val channel = NotificationChannel(
             "ebkk_id",
-            "New Travel",
+            "Utazás",
             NotificationManager.IMPORTANCE_DEFAULT
         ).apply {
             description = "Channel for general notifications"
         }
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
         WorkManager.getInstance(applicationContext).enqueue(
             PeriodicWorkRequestBuilder<MyWorker>(15, TimeUnit.MINUTES).build())
+        LoggerService.log("Message service created.")
     }
 
 
@@ -52,7 +54,7 @@ class MyWorker(context: Context, workerParams: WorkerParameters) : Worker(contex
             contextStorage.updateLastRun()
             return Result.success()
         }
-        if (System.currentTimeMillis() - lastRun < 15 * 60 * 1000) {
+        if (System.currentTimeMillis() - lastRun < 10 * 60 * 1000) {
             LoggerService.log("Too soon for check run")
             return Result.success()
         }

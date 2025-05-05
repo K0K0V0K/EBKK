@@ -35,6 +35,7 @@ import hu.koko.model.Travel
 import hu.koko.model.User
 import hu.koko.repository.TravelRepository
 import hu.koko.repository.UserRepository
+import hu.koko.service.LoggerService
 import java.time.format.DateTimeFormatter
 
 @Composable
@@ -115,10 +116,16 @@ fun TravelCard(
                 IconButton(
                     onClick = {
                         userRepository.getByDriver(travel.driverName) {
-                            val intent = Intent(Intent.ACTION_VIEW, "https://m.me/${it.messenger}".toUri())
+                            val intent = Intent(
+                                Intent.ACTION_VIEW,
+                                "https://m.me/${it.messenger}".toUri()
+                            ).apply {
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            }
                             try {
                                 applicationContext.startActivity(intent)
                             } catch (e: Exception) {
+                                LoggerService.error(e)
                                 Toast.makeText(applicationContext, "Messenger is not installed", Toast.LENGTH_SHORT).show()
                             }
                         }
